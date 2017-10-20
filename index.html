@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<!-- Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not. It’s not a story the Jedi would tell you. It’s a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life… He had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful… the only thing he was afraid of was losing his power, which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. Ironic. He could save others from death, but not himself. -->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Classpass Stream Sample App</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/superagent/3.6.3/superagent.min.js" integrity="sha256-HOyWQge8jnElRaCN84NixFwlDE43tm6pmh5sf9VjoX0=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js" integrity="sha256-zG8v+NWiZxmjNi+CvUYnZwKtHzFtdO8cAKUIdB8+U9I=" crossorigin="anonymous"></script>
+        <style media="screen">
+            * {
+                box-sizing: border-box;
+            }
+
+            .feeds {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .feed {
+                width: 500px;
+                background-color: lightgray;
+                padding: 1em;
+                margin: 1em;
+            }
+
+            .feed table td {
+                padding: 0.25em 0.5em;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Classpass <a href="http://getstream.io" target="_blank">Stream</a> Sample App</h1>
+        <div class="feeds">
+            <div class="feed">
+                <h1>Kristin's "Timeline" Feed</h1>
+                <p><em>(where Kristin can see what classes other users have attended)</em></p>
+                <p>Feed type: <strong>Flat</strong></p>
+                <p>Feed group: "timeline" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
+                <p>Follow/unfollow other users and gyms:</p>
+                <table>
+                    <tr>
+                        <td>Kristin</td>
+                        <td><button class="follow-button" type="button" name="button" data-user-id="kristin">Follow</button></td>
+                        <td><button class="unfollow-button" type="button" name="button" data-user-id="kristin">Unfollow</button></td>
+                    </tr>
+                    <tr>
+                        <td>Jessie</td>
+                        <td><button class="follow-button" type="button" name="button" data-user-id="jessie">Follow</button></td>
+                        <td><button class="unfollow-button" type="button" name="button" data-user-id="jessie">Unfollow</button></td>
+                    </tr>
+                    <tr>
+                        <td>Orange Theory</td>
+                        <td><button class="follow-button" type="button" name="button" data-user-id="ot">Follow</button></td>
+                        <td><button class="unfollow-button" type="button" name="button" data-user-id="ot">Unfollow</button></td>
+                    </tr>
+                    <tr>
+                        <td>prAna</td>
+                        <td><button class="follow-button" type="button" name="button" data-user-id="prana">Follow</button></td>
+                        <td><button class="unfollow-button" type="button" name="button" data-user-id="prana">Unfollow</button></td>
+                    </tr>
+                </table>
+                <p>This feed <strong>follows</strong>:</p>
+                <div class="following-list">
+
+                </div>
+                <h2>Activities:</h2>
+                <table class="feed-content" id="kristin-timeline"></table>
+            </div>
+            <div class="feed">
+                <h1>Kristin's "Profile" Feed</h1>
+                <p><em>(where anyone can see status updates from Kristin)</em></p>
+                <p>Feed type: <strong>Flat</strong></p>
+                <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
+                <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Kristin's personal feed.</p>
+                <div class="feed-input">
+                    <button type="button" name="button" class="attend-class-button" data-user-id="kristin" data-gym-id="ot">attend a class at Orange Theory</button>
+                    <button type="button" name="button" class="attend-class-button" data-user-id="kristin" data-gym-id="prana">attend a class at prAna</button>
+
+                </div>
+                <h2>Activities:</h2>
+                <table class="feed-content" id="kristin-profile"></table>
+            </div>
+            <!-- <div class="feed">
+                <h1>Jessie's "Profile" Feed</h1>
+                <p><em>(where anyone can see status updates from Jessie)</em></p>
+                <p>Feed type: <strong>Flat</strong></p>
+                <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
+                <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Jessie's personal feed.</p>
+                <div class="feed-input">
+                    (this is where we attend classes at OT and prana)
+                </div>
+                <h2>Activities</h2>
+                <table class="feed-content" id="jessie-profile"></table>
+            </div>
+            <div class="feed">
+                <h1>Orange Theory's "Gym" Feed</h1>
+                <p><em>(where anyone can see status updates from Orange Theory)</em></p>
+                <p>Feed type: <strong>Flat</strong></p>
+                <p>Feed group: "<strong>profile</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
+                <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Orange Theory's personal feed.</p>
+                <div class="feed-input">
+                    <form data-user-id="rey" name="rey">
+                        <input type="text" name="text" value="" autocomplete="off">
+                        <input type="submit" name="submit" value="post status">
+                    </form>
+                </div>
+                <h2>Activities</h2>
+                <table class="feed-content" id="rey-profile"></table>
+            </div>
+            <div class="feed">
+                <h1>prAna's "Gym" Feed</h1>
+                <p><em>(where anyone can see status updates from prAna)</em></p>
+                <p>Feed type: <strong>Flat</strong></p>
+                <p>Feed group: "<strong>profile</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
+                <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's prAna's personal feed.</p>
+                <div class="feed-input">
+                    <form data-user-id="rey" name="rey">
+                        <input type="text" name="text" value="" autocomplete="off">
+                        <input type="submit" name="submit" value="post status">
+                    </form>
+                </div>
+                <h2>Activities</h2>
+                <table class="feed-content" id="rey-profile"></table>
+            </div> -->
+
+        </div>
+        <script type="text/javascript">
+            var request = superagent
+            // get BB-8's timeline feed on page load
+            var updateTimelineFeed = function(userID) {
+                document.getElementById(userID + '-timeline').innerHTML = "updating feed..."
+                request.get("/get-timeline/" + userID).end(function(err, res) {
+                    // console.log(res.body);
+                    document.getElementById(userID + '-timeline').innerHTML = ""
+                    for (var i = 0; i < res.body.results.length; i++) {
+                        var humanizedTime = moment.utc(res.body.results[i].time).fromNow()
+                        var activityElement = document.createElement("tr");
+                        activityElement.innerHTML = `<td>${res.body.results[i].actor}</td><td>${res.body.results[i].object}</td><td>${humanizedTime}</td>`;
+                        document.getElementById(userID + '-timeline').appendChild(activityElement)
+                    }
+                })
+            }
+            var updateProfileFeed = function(userID) {
+                document.getElementById(userID + '-profile').innerHTML = "updating feed..."
+                request.get("/get-personal/" + userID).end(function(err, res) {
+                    document.getElementById(userID + '-profile').innerHTML = ""
+                    for (var i = 0; i < res.body.results.length; i++) {
+                        var humanizedTime = moment.utc(res.body.results[i].time).fromNow()
+                        var activityElement = document.createElement("tr");
+                        activityElement.innerHTML = `<td>${res.body.results[i].object}</td><td>${humanizedTime}</td>`;
+                        document.getElementById(userID + '-profile').appendChild(activityElement)
+                    }
+                })
+            }
+
+            // var forms = document.querySelectorAll(".feed-input form")
+            //
+            // for (var i = 0; i < forms.length; i++) {
+            //     forms[i].onsubmit = function(e) {
+            //         e.preventDefault()
+            //         formData = convertFormData(this)
+            //         this["submit"].disabled = true;
+            //         this["submit"].value = "submitting..."
+            //         request.post("/create-update/" + this.dataset.userId)
+            //             .send(formData)
+            //             .end((err, res) => {
+            //                 setTimeout(() => {
+            //                     this["submit"].disabled = false;
+            //                     this["submit"].value = "post status"
+            //                     // wait 500 ms, then update bb-8's timeline feed, and the profile feed that this came from
+            //                     updateTimelineFeed("bb-8")
+            //                     updateProfileFeed(this.dataset.userId)
+            //                     this["text"].value = ""
+            //                 }, 500);
+            //             })
+            //     }
+            // }
+
+            var attendClassButtons = document.querySelectorAll(".feed-input .attend-class-button")
+
+            for (var i = 0; i < attendClassButtons.length; i++) {
+                attendClassButtons[i].onclick = function(e) {
+                    console.log("clicked");
+                    e.preventDefault();
+                    request.post("/attend-class/" + this.dataset.userId + "/" + this.dataset.gymId)
+                        .end((err, res) => {
+                            setTimeout(() => {
+                                // this["submit"].disabled = false;
+                                // this["submit"].value = "post status"
+                                // wait 500 ms, then update bb-8's timeline feed, and the profile feed that this came from
+                                updateTimelineFeed("kristin")
+                                updateProfileFeed(this.dataset.userId)
+                            }, 500);
+                        })
+                }
+            }
+
+            var convertFormData = function(formElement) {
+                var formData = new FormData(formElement)
+                formObject = {}
+                for (var pair of formData.entries()) {
+                    formObject[pair[0]] = pair[1]
+                }
+                return formObject;
+            }
+
+
+            var getFollowingFeeds = function() {
+                request.get("/following").end(function(err, res) {
+                    if (res.body.length == 0) {
+                        document.querySelector(".following-list").innerHTML = "Nobody! Kristin isn't following anyone yet :("
+                    } else {
+                        var followings = []
+                        for (var i = 0; i < res.body.length; i++) {
+                            followings.push(res.body[i].target_id.split(":")[1])
+                        }
+                        followings = followings.map(function(following) {
+                            return "<li>" + following + "</li>";
+                        })
+                        document.querySelector(".following-list").innerHTML = "<ul>" + followings.join("") + "</ul>"
+                    }
+                })
+            }
+            var followButtons = document.querySelectorAll(".follow-button");
+            for (var i = 0; i < followButtons.length; i++) {
+                followButtons[i].onclick = function(e) {
+                    e.preventDefault();
+                    request.post("/follow/" + this.dataset.userId).end(function(err, res) {
+                        updateTimelineFeed("kristin")
+                        getFollowingFeeds();
+                    })
+                }
+            }
+            var unfollowButtons = document.querySelectorAll(".unfollow-button");
+            for (var i = 0; i < unfollowButtons.length; i++) {
+                unfollowButtons[i].onclick = function(e) {
+                    e.preventDefault();
+                    request.post("/unfollow/" + this.dataset.userId).end(function(err, res) {
+                        updateTimelineFeed("bb-8")
+                        getFollowingFeeds();
+                    })
+                }
+            }
+
+            // initialize everything!
+            getFollowingFeeds();
+            updateTimelineFeed("kristin")
+            // updateTimelineFeed("bb-8")
+            updateProfileFeed("kristin")
+            // updateProfileFeed("finn")
+            // updateProfileFeed("rey")
+        </script>
+    </body>
+</html>
