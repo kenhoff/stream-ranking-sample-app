@@ -11,6 +11,16 @@
                 box-sizing: border-box;
             }
 
+            body {
+                font-family: "Helvetica", sans-serif;
+                letter-spacing: 0.03em;
+
+            }
+
+            h1 {
+                text-align: center;
+            }
+
             .feeds {
                 display: flex;
                 flex-direction: row;
@@ -19,14 +29,49 @@
             }
 
             .feed {
+                border-radius: 50px;
+                /*border: 1px solid lightgray;*/
                 width: 500px;
-                background-color: lightgray;
-                padding: 1em;
+                /*background-color: lightgray;*/
+                /*padding: 1em;*/
                 margin: 1em;
+                box-shadow: 0px 5px 10px rgba(1, 1, 1, 0.1);
+            }
+
+            .feed .header {
+                background: linear-gradient(90deg, #23cfb9, #3b39da);
+                color: white;
+                display: flex;
+                padding: 1em 2em;
+                border-top-left-radius: 50px;
+                border-top-right-radius: 50px;
+            }
+
+            .feed .body {
+                padding: 1em 2em;
             }
 
             .feed table td {
                 padding: 0.25em 0.5em;
+            }
+
+            .buttons {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                margin: 1em 0;
+            }
+
+            button {
+                color: white;
+                background-color: #23cfb9;
+                border-radius: 10px;
+                padding: 1em;
+                margin: 0.5em;
+                border: none;
+                text-transform: uppercase;
+                font-weight: lighter;
+                cursor: pointer;
             }
         </style>
     </head>
@@ -34,29 +79,33 @@
         <h1>Classpass <a href="http://getstream.io" target="_blank">Stream</a> Sample App</h1>
         <div class="feeds">
             <div class="feed">
-                <h1>Kristin's "Timeline" Feed</h1>
-                <p><em>(where Kristin can see what classes other users have attended)</em></p>
-                <p>Feed type: <strong>Flat</strong></p>
-                <p>Feed group: "timeline" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
-                <p>Follow/unfollow other users and gyms:</p>
-                <table>
-                    <tr>
-                        <td>Kristin</td>
-                        <td><button class="follow-button" type="button" name="button" data-user-id="kristin">Follow</button></td>
-                        <td><button class="unfollow-button" type="button" name="button" data-user-id="kristin">Unfollow</button></td>
-                    </tr>
-                    <tr>
-                        <td>Jessie</td>
-                        <td><button class="follow-button" type="button" name="button" data-user-id="jessie">Follow</button></td>
-                        <td><button class="unfollow-button" type="button" name="button" data-user-id="jessie">Unfollow</button></td>
-                    </tr>
+                <div class="header">
+                    <h1>Kristin's "Timeline" Feed</h1>
+                </div>
+                <div class="body">
+                    <p><em>(where Kristin can see what classes other users have attended)</em></p>
+                    <p>Feed type: <strong>Flat</strong>, but also <strong>ranked</strong>!</p>
+                    <p>Feed group: "timeline" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
 
-                    <tr>
-                        <td>Scott</td>
-                        <td><button class="follow-button" type="button" name="button" data-user-id="scott">Follow</button></td>
-                        <td><button class="unfollow-button" type="button" name="button" data-user-id="scott">Unfollow</button></td>
-                    </tr>
-                    <!-- <tr>
+                    <p>Follow/unfollow other users:</p>
+                    <table>
+                        <tr>
+                            <td>Kristin</td>
+                            <td><button class="follow-button" type="button" name="button" data-user-id="kristin">Follow</button></td>
+                            <td><button class="unfollow-button" type="button" name="button" data-user-id="kristin">Unfollow</button></td>
+                        </tr>
+                        <tr>
+                            <td>Jessie</td>
+                            <td><button class="follow-button" type="button" name="button" data-user-id="jessie">Follow</button></td>
+                            <td><button class="unfollow-button" type="button" name="button" data-user-id="jessie">Unfollow</button></td>
+                        </tr>
+
+                        <tr>
+                            <td>Scott</td>
+                            <td><button class="follow-button" type="button" name="button" data-user-id="scott">Follow</button></td>
+                            <td><button class="unfollow-button" type="button" name="button" data-user-id="scott">Unfollow</button></td>
+                        </tr>
+                        <!-- <tr>
                         <td>Orange Theory</td>
                         <td><button class="follow-button" type="button" name="button" data-user-id="ot">Follow</button></td>
                         <td><button class="unfollow-button" type="button" name="button" data-user-id="ot">Unfollow</button></td>
@@ -66,70 +115,100 @@
                         <td><button class="follow-button" type="button" name="button" data-user-id="prana">Follow</button></td>
                         <td><button class="unfollow-button" type="button" name="button" data-user-id="prana">Unfollow</button></td>
                     </tr> -->
-                </table>
-                <p>This feed <strong>follows</strong>:</p>
-                <div class="following-list">
+                    </table>
+                    <p>This feed <strong>follows</strong>:</p>
+                    <div class="following-list">
 
+                    </div>
+                    <h2>Activities:</h2>
+                    <table class="feed-content" id="kristin-timeline"></table>
                 </div>
-                <h2>Activities:</h2>
-                <table class="feed-content" id="kristin-timeline"></table>
+
             </div>
             <div class="feed">
-                <h1>Kristin's "Profile" Feed</h1>
-                <p><em>(where anyone can see status updates from Kristin)</em></p>
-                <p>Feed type: <strong>Flat</strong></p>
-                <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
-                <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Kristin's personal feed.</p>
-                <div class="feed-input">
-                    <button type="button" name="button" class="action-button" data-user-id="kristin" data-action="teach-class">teach a class</button>
-                    <button type="button" name="button" class="action-button" data-user-id="kristin" data-action="attend-class">attend a class</button>
-                    <button type="button" name="button" class="action-button" data-user-id="kristin" data-action="rate-class">rate a class 5 stars</button>
-                    <div>
-                        <span>With "popularity":</span>
-                        <input data-user-id="kristin" class="kristin-popularity-input" type="text" name="" value="">
-                    </div>
-
+                <div class="header">
+                    <h1>Kristin's "Profile" Feed</h1>
                 </div>
-                <h2>Activities:</h2>
-                <table class="feed-content" id="kristin-profile"></table>
+                <div class="body">
+                    <p><em>(where anyone can see status updates from Kristin)</em></p>
+                    <p>Feed type: <strong>Flat</strong></p>
+                    <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
+                    <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Kristin's personal feed.</p>
+                    <div class="feed-input">
+                        <p><strong>Perform an activity:</strong></p>
+                        <div class="buttons">
+
+                            <button type="button" name="button" class="action-button" data-user-id="kristin" data-action="teach-class">teach a class</button>
+                            <button type="button" name="button" class="action-button" data-user-id="kristin" data-action="attend-class">attend a class</button>
+                            <button type="button" name="button" class="action-button" data-user-id="kristin" data-action="rate-class">rate a class 5 stars</button>
+                        </div>
+                        <div>
+                            <span>With "popularity":</span>
+                            <input data-user-id="kristin" class="kristin-popularity-input" type="text" name="" value="">
+                        </div>
+
+                    </div>
+                    <h2>Activities:</h2>
+                    <table class="feed-content" id="kristin-profile"></table>
+                </div>
             </div>
             <div class="feed">
-                <h1>Jessie's "Profile" Feed</h1>
-                <p><em>(where anyone can see status updates from Jessie)</em></p>
-                <p>Feed type: <strong>Flat</strong></p>
-                <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
-                <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Jessie's personal feed.</p>
-                <div class="feed-input">
-                    <button type="button" name="button" class="action-button" data-user-id="jessie" data-action="teach-class">teach a class</button>
-                    <button type="button" name="button" class="action-button" data-user-id="jessie" data-action="attend-class">attend a class</button>
-                    <button type="button" name="button" class="action-button" data-user-id="jessie" data-action="rate-class">rate a class 5 stars</button>
-                    <div>
-                        <span>With "popularity":</span>
-                        <input data-user-id="jessie" class="jessie-popularity-input" type="text" name="" value="">
-                    </div>
+                <div class="header">
 
+                    <h1>Jessie's "Profile" Feed</h1>
                 </div>
-                <h2>Activities</h2>
-                <table class="feed-content" id="jessie-profile"></table>
+                <div class="body">
+
+                    <p><em>(where anyone can see status updates from Jessie)</em></p>
+                    <p>Feed type: <strong>Flat</strong></p>
+                    <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
+                    <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Jessie's personal feed.</p>
+                    <div class="feed-input">
+                        <p><strong>Perform an activity:</strong></p>
+                        <div class="buttons">
+
+                            <button type="button" name="button" class="action-button" data-user-id="jessie" data-action="teach-class">teach a class</button>
+                            <button type="button" name="button" class="action-button" data-user-id="jessie" data-action="attend-class">attend a class</button>
+                            <button type="button" name="button" class="action-button" data-user-id="jessie" data-action="rate-class">rate a class 5 stars</button>
+                        </div>
+                        <div>
+                            <span>With "popularity":</span>
+                            <input data-user-id="jessie" class="jessie-popularity-input" type="text" name="" value="">
+                        </div>
+
+                    </div>
+                    <h2>Activities</h2>
+                    <table class="feed-content" id="jessie-profile"></table>
+                </div>
             </div>
 
             <div class="feed">
-                <h1>Scott's "Profile" Feed</h1>
-                <p><em>(where anyone can see status updates from Scott)</em></p>
-                <p>Feed type: <strong>Flat</strong></p>
-                <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
-                <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Scott's personal feed.</p>
-                <div class="feed-input">
-                    <button type="button" name="button" class="action-button" data-user-id="scott" data-action="teach-class">teach a class</button>
-                    <button type="button" name="button" class="action-button" data-user-id="scott" data-action="attend-class">attend a class</button>
-                    <button type="button" name="button" class="action-button" data-user-id="scott" data-action="rate-class">rate a class 5 stars</button>
-                    <div>
-                        <span>With "popularity":</span>
-                        <input data-user-id="scott" class="scott-popularity-input" type="text" name="" value="">
-                    </div>
+                <div class="header">
+
+                    <h1>Scott's "Profile" Feed</h1>
                 </div>
-                <h2>Activities</h2>
-                <table class="feed-content" id="scott-profile"></table>
+                <div class="body">
+
+                    <p><em>(where anyone can see status updates from Scott)</em></p>
+                    <p>Feed type: <strong>Flat</strong></p>
+                    <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
+                    <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Scott's personal feed.</p>
+                    <div class="feed-input">
+                        <p><strong>Perform an activity:</strong></p>
+                        <div class="buttons">
+
+                            <button type="button" name="button" class="action-button" data-user-id="scott" data-action="teach-class">teach a class</button>
+                            <button type="button" name="button" class="action-button" data-user-id="scott" data-action="attend-class">attend a class</button>
+                            <button type="button" name="button" class="action-button" data-user-id="scott" data-action="rate-class">rate a class 5 stars</button>
+                        </div>
+                        <div>
+                            <span>With "popularity":</span>
+                            <input data-user-id="scott" class="scott-popularity-input" type="text" name="" value="">
+                        </div>
+                    </div>
+                    <h2>Activities</h2>
+                    <table class="feed-content" id="scott-profile"></table>
+                </div>
             </div>
             <!-- <div class="feed">
                 <h1>Orange Theory's "Gym" Feed</h1>
