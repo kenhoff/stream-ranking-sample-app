@@ -19,10 +19,10 @@
             }
 
             .feed {
-                width: 25%;
+                width: 500px;
                 background-color: lightgray;
                 padding: 1em;
-                /*margin: 1em;*/
+                margin: 1em;
             }
 
             .feed table td {
@@ -81,9 +81,14 @@
                 <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
                 <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Kristin's personal feed.</p>
                 <div class="feed-input">
-                    <button type="button" name="button" class="action-button" data-user-id="kristin" data-gym-id="ot" data-action="teach-class">teach a class</button>
-                    <button type="button" name="button" class="action-button" data-user-id="kristin" data-gym-id="ot" data-action="attend-class">attend a class</button>
-                    <button type="button" name="button" class="action-button"  data-user-id="kristin" data-gym-id="prana" data-action="rate-class">rate a class 5 stars</button>
+                    <button type="button" name="button" class="action-button" data-user-id="kristin" data-action="teach-class">teach a class</button>
+                    <button type="button" name="button" class="action-button" data-user-id="kristin" data-action="attend-class">attend a class</button>
+                    <button type="button" name="button" class="action-button" data-user-id="kristin" data-action="rate-class">rate a class 5 stars</button>
+                    <div>
+                        <span>With "popularity":</span>
+                        <input data-user-id="kristin" class="kristin-popularity-input" type="text" name="" value="">
+                    </div>
+
                 </div>
                 <h2>Activities:</h2>
                 <table class="feed-content" id="kristin-profile"></table>
@@ -95,9 +100,14 @@
                 <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
                 <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Jessie's personal feed.</p>
                 <div class="feed-input">
-                    <button type="button" name="button" class="action-button" data-user-id="jessie" data-gym-id="ot" data-action="teach-class">teach a class</button>
-                    <button type="button" name="button" class="action-button" data-user-id="jessie" data-gym-id="ot" data-action="attend-class">attend a class</button>
-                    <button type="button" name="button" class="action-button"  data-user-id="jessie" data-gym-id="prana" data-action="rate-class">rate a class 5 stars</button>
+                    <button type="button" name="button" class="action-button" data-user-id="jessie" data-action="teach-class">teach a class</button>
+                    <button type="button" name="button" class="action-button" data-user-id="jessie" data-action="attend-class">attend a class</button>
+                    <button type="button" name="button" class="action-button" data-user-id="jessie" data-action="rate-class">rate a class 5 stars</button>
+                    <div>
+                        <span>With "popularity":</span>
+                        <input data-user-id="jessie" class="jessie-popularity-input" type="text" name="" value="">
+                    </div>
+
                 </div>
                 <h2>Activities</h2>
                 <table class="feed-content" id="jessie-profile"></table>
@@ -110,9 +120,13 @@
                 <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
                 <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Scott's personal feed.</p>
                 <div class="feed-input">
-                    <button type="button" name="button" class="action-button" data-user-id="scott" data-gym-id="ot" data-action="teach-class">teach a class</button>
-                    <button type="button" name="button" class="action-button" data-user-id="scott" data-gym-id="ot" data-action="attend-class">attend a class</button>
-                    <button type="button" name="button" class="action-button"  data-user-id="scott" data-gym-id="prana" data-action="rate-class">rate a class 5 stars</button>
+                    <button type="button" name="button" class="action-button" data-user-id="scott" data-action="teach-class">teach a class</button>
+                    <button type="button" name="button" class="action-button" data-user-id="scott" data-action="attend-class">attend a class</button>
+                    <button type="button" name="button" class="action-button" data-user-id="scott" data-action="rate-class">rate a class 5 stars</button>
+                    <div>
+                        <span>With "popularity":</span>
+                        <input data-user-id="scott" class="scott-popularity-input" type="text" name="" value="">
+                    </div>
                 </div>
                 <h2>Activities</h2>
                 <table class="feed-content" id="scott-profile"></table>
@@ -160,7 +174,11 @@
                     for (var i = 0; i < res.body.results.length; i++) {
                         var humanizedTime = moment.utc(res.body.results[i].time).fromNow()
                         var activityElement = document.createElement("tr");
-                        activityElement.innerHTML = `<td>${res.body.results[i].actor}</td><td>${res.body.results[i].object}</td><td>${humanizedTime}</td>`;
+                        activityElement.innerHTML =
+                            `<td>${res.body.results[i].actor}</td>
+                            <td>${res.body.results[i].object}</td>
+                            <td>${res.body.results[i].popularity}</td>
+                            <td>${humanizedTime}</td>`;
                         document.getElementById(userID + '-timeline').appendChild(activityElement)
                     }
                 })
@@ -172,7 +190,9 @@
                     for (var i = 0; i < res.body.results.length; i++) {
                         var humanizedTime = moment.utc(res.body.results[i].time).fromNow()
                         var activityElement = document.createElement("tr");
-                        activityElement.innerHTML = `<td>${res.body.results[i].object}</td><td>${humanizedTime}</td>`;
+                        activityElement.innerHTML =
+                            `<td>${res.body.results[i].object}</td>
+                            <td>${humanizedTime}</td>`;
                         document.getElementById(userID + '-profile').appendChild(activityElement)
                     }
                 })
@@ -183,10 +203,14 @@
             for (var i = 0; i < actionButtons.length; i++) {
                 actionButtons[i].onclick = function(e) {
                     // console.log("clicked");
-                    e.preventDefault();
+                    // get value of popularity input on
                     let actionType;
+                    let popularityValue = document.querySelector(`.${this.dataset.userId}-popularity-input`).value;
                     console.log(this.dataset.action);
                     request.post(`/activities/${this.dataset.action}/${this.dataset.userId}`)
+                        .send({
+                            popularity: popularityValue
+                        })
                         .end((err, res) => {
                             setTimeout(() => {
                                 // this["submit"].disabled = false;

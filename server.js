@@ -17,7 +17,9 @@ app.get("/", (req, res) => {
 app.get("/get-timeline/:userID", (req, res) => {
     var userTimelineFeed = client.feed("timeline", req.params.userID)
     userTimelineFeed.get({
-        limit: 10
+        limit: 10,
+        ranking: "popularity",
+        time: new Date()
     }).then(results => {
         res.send(results)
     }).catch(err => {
@@ -41,6 +43,7 @@ app.get("/following", (req, res) => {
     client.feed("timeline", "kristin").following().then(results => {
         res.send(results.results)
     }).catch(err => {
+        console.log(err);
         res.status(500).send(err)
     });
 })
@@ -61,7 +64,6 @@ app.post("/unfollow/:userID", (req, res) => {
     userTimelineFeed.unfollow("personal", req.params.userID).then(results => {
         res.send(results)
     }).catch(err => {
-        console.log(err);
         res.status(500).send(err)
     })
 })
@@ -81,12 +83,12 @@ app.post("/activities/:verb/:userID", (req, res) => {
             break;
         default:
             object = "performed an action....?"
-
     }
     userProfileFeed.addActivity({
         actor: req.params.userID,
         verb: "posted",
-        object: object
+        object: object,
+        popularity: parseInt(req.body.popularity, 10) || 0
     }).then(data => {
         res.send(data)
     }).catch(err => {
