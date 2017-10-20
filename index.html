@@ -82,19 +82,20 @@
                 <h2>Activities:</h2>
                 <table class="feed-content" id="kristin-profile"></table>
             </div>
-            <!-- <div class="feed">
+            <div class="feed">
                 <h1>Jessie's "Profile" Feed</h1>
                 <p><em>(where anyone can see status updates from Jessie)</em></p>
                 <p>Feed type: <strong>Flat</strong></p>
                 <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
                 <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Jessie's personal feed.</p>
                 <div class="feed-input">
-                    (this is where we attend classes at OT and prana)
+                    <button type="button" name="button" class="attend-class-button" data-user-id="jessie" data-gym-id="ot">attend a class at Orange Theory</button>
+                    <button type="button" name="button" class="attend-class-button" data-user-id="jessie" data-gym-id="prana">attend a class at prAna</button>
                 </div>
                 <h2>Activities</h2>
                 <table class="feed-content" id="jessie-profile"></table>
             </div>
-            <div class="feed">
+            <!-- <div class="feed">
                 <h1>Orange Theory's "Gym" Feed</h1>
                 <p><em>(where anyone can see status updates from Orange Theory)</em></p>
                 <p>Feed type: <strong>Flat</strong></p>
@@ -128,7 +129,7 @@
         </div>
         <script type="text/javascript">
             var request = superagent
-            // get BB-8's timeline feed on page load
+            // get kristin's timeline feed on page load
             var updateTimelineFeed = function(userID) {
                 document.getElementById(userID + '-timeline').innerHTML = "updating feed..."
                 request.get("/get-timeline/" + userID).end(function(err, res) {
@@ -169,8 +170,8 @@
             //                 setTimeout(() => {
             //                     this["submit"].disabled = false;
             //                     this["submit"].value = "post status"
-            //                     // wait 500 ms, then update bb-8's timeline feed, and the profile feed that this came from
-            //                     updateTimelineFeed("bb-8")
+            //                     // wait 500 ms, then update kristin's timeline feed, and the profile feed that this came from
+            //                     updateTimelineFeed("kristin")
             //                     updateProfileFeed(this.dataset.userId)
             //                     this["text"].value = ""
             //                 }, 500);
@@ -182,14 +183,14 @@
 
             for (var i = 0; i < attendClassButtons.length; i++) {
                 attendClassButtons[i].onclick = function(e) {
-                    console.log("clicked");
+                    // console.log("clicked");
                     e.preventDefault();
                     request.post("/attend-class/" + this.dataset.userId + "/" + this.dataset.gymId)
                         .end((err, res) => {
                             setTimeout(() => {
                                 // this["submit"].disabled = false;
                                 // this["submit"].value = "post status"
-                                // wait 500 ms, then update bb-8's timeline feed, and the profile feed that this came from
+                                // wait 500 ms, then update kristin's timeline feed, and the profile feed that this came from
                                 updateTimelineFeed("kristin")
                                 updateProfileFeed(this.dataset.userId)
                             }, 500);
@@ -238,7 +239,7 @@
                 unfollowButtons[i].onclick = function(e) {
                     e.preventDefault();
                     request.post("/unfollow/" + this.dataset.userId).end(function(err, res) {
-                        updateTimelineFeed("bb-8")
+                        updateTimelineFeed("kristin")
                         getFollowingFeeds();
                     })
                 }
@@ -247,9 +248,9 @@
             // initialize everything!
             getFollowingFeeds();
             updateTimelineFeed("kristin")
-            // updateTimelineFeed("bb-8")
+            // updateTimelineFeed("kristin")
             updateProfileFeed("kristin")
-            // updateProfileFeed("finn")
+            updateProfileFeed("jessie")
             // updateProfileFeed("rey")
         </script>
     </body>
