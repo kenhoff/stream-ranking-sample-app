@@ -19,10 +19,10 @@
             }
 
             .feed {
-                width: 500px;
+                width: 25%;
                 background-color: lightgray;
                 padding: 1em;
-                margin: 1em;
+                /*margin: 1em;*/
             }
 
             .feed table td {
@@ -50,6 +50,12 @@
                         <td><button class="follow-button" type="button" name="button" data-user-id="jessie">Follow</button></td>
                         <td><button class="unfollow-button" type="button" name="button" data-user-id="jessie">Unfollow</button></td>
                     </tr>
+
+                    <tr>
+                        <td>Scott</td>
+                        <td><button class="follow-button" type="button" name="button" data-user-id="scott">Follow</button></td>
+                        <td><button class="unfollow-button" type="button" name="button" data-user-id="scott">Unfollow</button></td>
+                    </tr>
                     <!-- <tr>
                         <td>Orange Theory</td>
                         <td><button class="follow-button" type="button" name="button" data-user-id="ot">Follow</button></td>
@@ -75,9 +81,9 @@
                 <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
                 <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Kristin's personal feed.</p>
                 <div class="feed-input">
-                    <button type="button" name="button" class="attend-class-button" data-user-id="kristin" data-gym-id="ot">attend a class at Orange Theory</button>
-                    <button type="button" name="button" class="attend-class-button" data-user-id="kristin" data-gym-id="prana">attend a class at prAna</button>
-
+                    <button type="button" name="button" class="action-button" data-user-id="kristin" data-gym-id="ot" data-action="teach-class">teach a class</button>
+                    <button type="button" name="button" class="action-button" data-user-id="kristin" data-gym-id="ot" data-action="attend-class">attend a class</button>
+                    <button type="button" name="button" class="action-button"  data-user-id="kristin" data-gym-id="prana" data-action="rate-class">rate a class 5 stars</button>
                 </div>
                 <h2>Activities:</h2>
                 <table class="feed-content" id="kristin-profile"></table>
@@ -89,11 +95,27 @@
                 <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
                 <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Jessie's personal feed.</p>
                 <div class="feed-input">
-                    <button type="button" name="button" class="attend-class-button" data-user-id="jessie" data-gym-id="ot">attend a class at Orange Theory</button>
-                    <button type="button" name="button" class="attend-class-button" data-user-id="jessie" data-gym-id="prana">attend a class at prAna</button>
+                    <button type="button" name="button" class="action-button" data-user-id="jessie" data-gym-id="ot" data-action="teach-class">teach a class</button>
+                    <button type="button" name="button" class="action-button" data-user-id="jessie" data-gym-id="ot" data-action="attend-class">attend a class</button>
+                    <button type="button" name="button" class="action-button"  data-user-id="jessie" data-gym-id="prana" data-action="rate-class">rate a class 5 stars</button>
                 </div>
                 <h2>Activities</h2>
                 <table class="feed-content" id="jessie-profile"></table>
+            </div>
+
+            <div class="feed">
+                <h1>Scott's "Profile" Feed</h1>
+                <p><em>(where anyone can see status updates from Scott)</em></p>
+                <p>Feed type: <strong>Flat</strong></p>
+                <p>Feed group: "<strong>personal</strong>" (this can be named whatever you want - create feed groups in the <a href="https://getstream.io/dashboard" target="_blank">GetStream.io dashboard</a>)</p>
+                <p>This feed <strong>follows</strong>: nobody, and it shouldn't follow anyone! It's Scott's personal feed.</p>
+                <div class="feed-input">
+                    <button type="button" name="button" class="action-button" data-user-id="scott" data-gym-id="ot" data-action="teach-class">teach a class</button>
+                    <button type="button" name="button" class="action-button" data-user-id="scott" data-gym-id="ot" data-action="attend-class">attend a class</button>
+                    <button type="button" name="button" class="action-button"  data-user-id="scott" data-gym-id="prana" data-action="rate-class">rate a class 5 stars</button>
+                </div>
+                <h2>Activities</h2>
+                <table class="feed-content" id="scott-profile"></table>
             </div>
             <!-- <div class="feed">
                 <h1>Orange Theory's "Gym" Feed</h1>
@@ -156,36 +178,15 @@
                 })
             }
 
-            // var forms = document.querySelectorAll(".feed-input form")
-            //
-            // for (var i = 0; i < forms.length; i++) {
-            //     forms[i].onsubmit = function(e) {
-            //         e.preventDefault()
-            //         formData = convertFormData(this)
-            //         this["submit"].disabled = true;
-            //         this["submit"].value = "submitting..."
-            //         request.post("/create-update/" + this.dataset.userId)
-            //             .send(formData)
-            //             .end((err, res) => {
-            //                 setTimeout(() => {
-            //                     this["submit"].disabled = false;
-            //                     this["submit"].value = "post status"
-            //                     // wait 500 ms, then update kristin's timeline feed, and the profile feed that this came from
-            //                     updateTimelineFeed("kristin")
-            //                     updateProfileFeed(this.dataset.userId)
-            //                     this["text"].value = ""
-            //                 }, 500);
-            //             })
-            //     }
-            // }
+            var actionButtons = document.querySelectorAll(".feed-input .action-button")
 
-            var attendClassButtons = document.querySelectorAll(".feed-input .attend-class-button")
-
-            for (var i = 0; i < attendClassButtons.length; i++) {
-                attendClassButtons[i].onclick = function(e) {
+            for (var i = 0; i < actionButtons.length; i++) {
+                actionButtons[i].onclick = function(e) {
                     // console.log("clicked");
                     e.preventDefault();
-                    request.post("/attend-class/" + this.dataset.userId + "/" + this.dataset.gymId)
+                    let actionType;
+                    console.log(this.dataset.action);
+                    request.post(`/activities/${this.dataset.action}/${this.dataset.userId}`)
                         .end((err, res) => {
                             setTimeout(() => {
                                 // this["submit"].disabled = false;

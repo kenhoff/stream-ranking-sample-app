@@ -66,12 +66,27 @@ app.post("/unfollow/:userID", (req, res) => {
     })
 })
 
-app.post("/attend-class/:userID/:gymID", (req, res) => {
+app.post("/activities/:verb/:userID", (req, res) => {
     userProfileFeed = client.feed("personal", req.params.userID)
+    let object;
+    switch (req.params.verb) {
+        case "attend-class":
+            object = "attended a class"
+            break;
+        case "teach-class":
+            object = "taught a class"
+            break;
+        case "rate-class":
+            object = "rated a class 5 stars"
+            break;
+        default:
+            object = "performed an action....?"
+
+    }
     userProfileFeed.addActivity({
         actor: req.params.userID,
         verb: "posted",
-        object: `attended a class at ${req.params.gymID}`
+        object: object
     }).then(data => {
         res.send(data)
     }).catch(err => {
