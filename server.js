@@ -18,12 +18,12 @@ app.get("/get-timeline/:userID", (req, res) => {
     var userTimelineFeed = client.feed("timeline", req.params.userID)
     userTimelineFeed.get({
         limit: 10,
-        // ranking: "popularity",
+        ranking: "popularity",
         time: new Date()
     }).then(results => {
-        console.log(results.results[1].activities);
         res.send(results)
     }).catch(err => {
+        console.log(err);
         res.status(500).send(err)
     })
 })

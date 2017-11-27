@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<!-- Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not. It’s not a story the Jedi would tell you. It’s a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life… He had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful… the only thing he was afraid of was losing his power, which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. Ironic. He could save others from death, but not himself. -->
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Classpass Stream Sample App</title>
+        <title>Stream Ranking Sample App</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/superagent/3.6.3/superagent.min.js" integrity="sha256-HOyWQge8jnElRaCN84NixFwlDE43tm6pmh5sf9VjoX0=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js" integrity="sha256-zG8v+NWiZxmjNi+CvUYnZwKtHzFtdO8cAKUIdB8+U9I=" crossorigin="anonymous"></script>
         <style media="screen">
@@ -76,7 +75,7 @@
         </style>
     </head>
     <body>
-        <h1>Classpass <a href="http://getstream.io" target="_blank">Stream</a> Sample App</h1>
+        <h1><a href="http://getstream.io" target="_blank">Stream</a> Ranking Sample App</h1>
         <div class="feeds">
             <div class="feed">
                 <div class="header">
@@ -248,6 +247,7 @@
             var updateTimelineFeed = function(userID) {
                 document.getElementById(userID + '-timeline').innerHTML = "updating feed..."
                 request.get("/get-timeline/" + userID).end(function(err, res) {
+                    console.log(res.body.results);
                     // console.log(res.body);
                     document.getElementById(userID + '-timeline').innerHTML = ""
                     for (var i = 0; i < res.body.results.length; i++) {
